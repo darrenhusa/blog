@@ -16,7 +16,7 @@ class Student extends Model
   // public $AorWInTerm = buildAorWInTerm($TERM_ID);
   //
   // protected $appends = ['a_or_w_in_term', ];
-  protected $appends = ['AorWInTerm'];
+  // protected $appends = ['AorWInTerm', 'NextFallTerm', 'AorWInNextFall'];
 
 
   public function scopeIsAorW($query)
@@ -58,25 +58,25 @@ class Student extends Model
 
   }
 
-  // public function buildAorWInTerm()
-  // {
-  //   $term = '20191';
-  //
-  //   $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
-  //     ->where('DFLT_ID', $this->DFLT_ID)
-  //     ->where('TERM_ID', $term);
-  //
-  //     if ($status->count() == 1)
-  //     {
-  //       $result = "TRUE";
-  //     }
-  //     else
-  //     {
-  //       $result = "FALSE";
-  //     }
-  //
-  //     return $result;
-  // }
+  public function buildAorWInTerm()
+  {
+    $term = '20191';
+
+    $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
+      ->where('DFLT_ID', $this->DFLT_ID)
+      ->where('TERM_ID', $term);
+
+      if ($status->count() == 1)
+      {
+        $result = "TRUE";
+      }
+      else
+      {
+        $result = "FALSE";
+      }
+
+      return $result;
+  }
 
   // public function buildNextFallTerm($term)
   // {
@@ -105,34 +105,33 @@ class Student extends Model
   //     // $this->result;
   // }
 
-  public function getAorWInTermAttribute()
-  {
-    $term = '20191';
-    $term = '20182';
-
-    $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
-      ->where('DFLT_ID', $this->DFLT_ID)
-      ->where('TERM_ID', $term);
-
-      if ($status->count() == 1)
-      {
-        $result = "TRUE";
-      }
-      else
-      {
-        $result = "FALSE";
-      }
-      // dd($this->DFLT_ID);
-      // dd($status);
-      // dd($result);
-
-      // $result = $this->buildAorWInTerm($this->TERM_ID);
-
-      // dd($result);
-
-      return $result;
-      // $this->result;
-  }
+  // public function getAorWInTermAttribute()
+  // {
+  //   // $term = '20191';
+  //   //
+  //   // $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
+  //   //   ->where('DFLT_ID', $this->DFLT_ID)
+  //   //   ->where('TERM_ID', $term);
+  //   //
+  //   //   if ($status->count() == 1)
+  //   //   {
+  //   //     $result = "TRUE";
+  //   //   }
+  //   //   else
+  //   //   {
+  //   //     $result = "FALSE";
+  //   //   }
+  //     // dd($this->DFLT_ID);
+  //     // dd($status);
+  //     // dd($result);
+  //
+  //     $result = $this->buildAorWInTerm($this->TERM_ID);
+  //
+  //     // dd($result);
+  //
+  //     return $result;
+  //     // $this->result;
+  // }
 
   // public function setAorWInTermAttribute()
   // {

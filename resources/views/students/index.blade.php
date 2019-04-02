@@ -22,6 +22,7 @@
   <table border="1">
     <tr>
       <td>Term</td>
+      <!-- <td>NextFallTerm</td> -->
       <td>DfltId</td>
       <td>LastName</td>
       <td>FirstName</td>
@@ -31,13 +32,15 @@
       <td>PrgmId1</td>
       <td>MajorCode</td>
       <td>MajorDesc</td>
-      <td>ActiveInNextFall</td>
+      <!-- <td>AorWInNextFall</td> -->
     </tr>
 
+    <!--  Want the non-returners!-->
     @foreach ($students as $student)
       @if ($student->AorWInTerm == 'FALSE')
         <tr>
           <td>{{ $student->TERM_ID }}</td>
+          <!-- <td>{{ $student->NextFallTerm }}</td> -->
           <td>{{ $student->DFLT_ID }}</td>
           <td>{{ $student->LAST_NAME }}</td>
           <td>{{ $student->FIRST_NAME }}</td>
@@ -47,7 +50,7 @@
           <td>{{ $student->PRGM_ID1 }}</td>
           <td>{{ $student->MAMI_ID_MJ1 }}</td>
           <td>{{ $student->DESCR }}</td>
-          <td>{{ $student->AorWInTerm }}</td>
+          <!-- <td>{{ $student->AorWInNextFall }}</td> -->
         </tr>
       @endif
 

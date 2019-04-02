@@ -8,12 +8,12 @@ class StudentsController extends Controller
 {
   public function index()
   {
-    $term = '20191';
+    // $term = '20191';
     $term = '20182';
     $fields = ['TERM_ID', 'DFLT_ID', 'LAST_NAME', 'FIRST_NAME', 'STUD_STATUS', 'CDIV_ID', 'ETYP_ID', 'PRGM_ID1', 'MAMI_ID_MJ1', 'DESCR'];
 
     // Join Prospect with CCSJ_PROD.CCSJ_CO_V_NAME on NAME_ID
-    $students = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
+    $trad_students = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
       ->leftJoin('CCSJ_PROD.CO_MAJOR_MINOR', 'CCSJ_PROD.CO_MAJOR_MINOR.MAMI_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.MAMI_ID_MJ1')
       ->where('TERM_ID', $term)
       ->isAorW()
@@ -21,11 +21,16 @@ class StudentsController extends Controller
       // ->where('AorWInTerm', 'FALSE')
       ->orderBy('LAST_NAME', 'asc')
       ->orderBy('FIRST_NAME', 'asc')
-      ->select($fields)
+      ->select($fields);
       // ->paginate(50);
-      ->get();
+      // ->get();
 
-      $total_non_returners = $students->where('AorWInTerm', 'FALSE')->count();
+      $spring_enrolled = $trad_students->get();
+      // $spring_enrolled = $trad_students->simplePaginate(50);
+
+      // $students->simplePaginate(50);
+
+      $total_non_returners = $trad_students->where('AorWInTerm', 'FALSE')->count();
 
       // dd($total_non_returners);
 
@@ -33,12 +38,12 @@ class StudentsController extends Controller
       // dd($students->paginate(50)->toSql());
       // dd('hello');
       // $students is a collection ==> use sortBy for a collection!
-      $codes = $students->sortBy('PRGM_ID1')->pluck('PRGM_ID1')->unique();
+      $codes = $trad_students->sortBy('PRGM_ID1')->pluck('PRGM_ID1')->unique();
       // dd($codes);
       // dd($students_sql);
 
       $data = [
-        'students' => $students,
+        'students' => $spring_enrolled,
         'codes' => $codes,
         'total_non_returners' => $total_non_returners
       ];
