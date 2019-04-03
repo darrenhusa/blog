@@ -30,15 +30,19 @@ class StudentsController extends Controller
 
       // $students->simplePaginate(50);
 
-      $total_non_returners = $trad_students->where('AorWInTerm', 'FALSE')->count();
+      // dd($spring_enrolled->ToArray());
 
-      // dd($total_non_returners);
+      // $term = '20182';
+      $total_non_returners = $spring_enrolled->where('a_or_w_in_next_fall', 'FALSE')->count();
+      // $total_non_returners = $spring_enrolled->where('AorWInTerm', 'FALSE')->count();
+
+      dd($total_non_returners);
 
       // dd($students->toSql());
       // dd($students->paginate(50)->toSql());
       // dd('hello');
       // $students is a collection ==> use sortBy for a collection!
-      $codes = $trad_students->sortBy('PRGM_ID1')->pluck('PRGM_ID1')->unique();
+      $codes = $spring_enrolled->sortBy('PRGM_ID1')->pluck('PRGM_ID1')->unique();
       // dd($codes);
       // dd($students_sql);
 

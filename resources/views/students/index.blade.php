@@ -17,8 +17,6 @@
 
 </ul>
 
-<p>There are a total of {{ $total_non_returners }} Non-Returners.</p>
-
   <table border="1">
     <tr>
       <td>Term</td>
@@ -37,7 +35,7 @@
 
     <!--  Want the non-returners!-->
     @foreach ($students as $student)
-      @if ($student->AorWInTerm == 'FALSE')
+      <!-- @if ($student->AorWInTerm == 'FALSE') -->
         <tr>
           <td>{{ $student->TERM_ID }}</td>
           <!-- <td>{{ $student->NextFallTerm }}</td> -->
