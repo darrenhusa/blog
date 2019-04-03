@@ -9,13 +9,13 @@
 <body>
 <h1>Spring 2019 to Fall 2019 TRAD Retention</h1>
 
-<p>There are the following PRGM_ID1 codes in use:</p>
+<!-- <p>There are the following PRGM_ID1 codes in use:</p>
 <ul>
   @foreach ($codes as $code)
   <li>{{ $code }}</li>
   @endforeach
 
-</ul>
+</ul> -->
 
 <p>The current term is {{ $current_term }}. The next Fall term is computed as {{ $next_fall_term }}.</p>
 <p>There are {{ $total_non_returners }} TRAD non-returners as of {{ $today }}.</p>
