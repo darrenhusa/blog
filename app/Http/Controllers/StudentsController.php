@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class StudentsController extends Controller
@@ -69,6 +70,28 @@ class StudentsController extends Controller
       return view('students.index', $data);
       // return view('students.index', compact('students'));
 
+  }
+
+  public function get_number_of_ccsj_sports()
+  {
+      $term = '20182';
+      $dflt_id = '100094247';
+
+      $num_sports_in_sr = DB::table('CCSJ_PROD.SR_STUD_TERM_ACT')
+        ->join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUD_TERM_ACT.NAME_ID')
+        // ->join('CCSJ_PROD.CO_ACTIV_CODE', 'CCSJ_PROD.CO_ACTIV_CODE.ACTI_ID', '=', 'CCSJ_PROD.SR_STUD_TERM_ACT.ACTI_ID')
+        ->join('CCSJ_PROD.CO_ACTIV_CODE', function ($join) {
+              $join->on('CCSJ_PROD.SR_STUD_TERM_ACT.ACTI_ID', '=', 'CCSJ_PROD.CO_ACTIV_CODE.ACTI_ID');
+            })
+        ->where('DFLT_ID', $dflt_id)
+        ->where('TERM_ID', $term)
+        ->where('ATHLETIC_FLAG', 'T')
+        // ->select('ACTI_ID')
+        ->get()
+        ->count();
+
+        // dd($num_sports_in_sr);
+      return $num_sports_in_sr;
   }
 
   public function convert_term()

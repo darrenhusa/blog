@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+// use App\DB;
+use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
@@ -15,7 +17,7 @@ class Student extends Model
 
   // public $AorWInTerm = buildAorWInTerm($TERM_ID);
   //
-  protected $appends = ['a_or_w_in_term', 'next_fall_term', 'a_or_w_in_next_fall'];
+  protected $appends = ['a_or_w_in_term', 'next_fall_term', 'a_or_w_in_next_fall', 'num_ccsj_sports', 'is_sr_athlete'];
   // protected $appends = ['AorWInTerm'];
 
   public function getAorWInTermAttribute()
@@ -68,6 +70,59 @@ class Student extends Model
         $result = "FALSE";
       }
 
+      return $result;
+  }
+
+  public function getNumCcsjSportsAttribute()
+  {
+
+      // $num_sports_in_sr = DB::table('CCSJ_PROD.SR_STUD_TERM_ACT')
+      //   ->join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUD_TERM_ACT.NAME_ID')
+      //   // ->join('CCSJ_PROD.CO_ACTIV_CODE', 'CCSJ_PROD.CO_ACTIV_CODE.ACTI_ID', '=', 'CCSJ_PROD.SR_STUD_TERM_ACT.ACTI_ID')
+      //   ->join('CCSJ_PROD.CO_ACTIV_CODE', function ($join) {
+      //         $join->on('CCSJ_PROD.SR_STUD_TERM_ACT.ACTI_ID', '=', 'CCSJ_PROD.CO_ACTIV_CODE.ACTI_ID');
+      //       })
+      //   ->where('DFLT_ID', $this->DFLT_ID)
+      //   ->where('TERM_ID', $this->TERM_ID)
+      //   // ->where('ATHLETIC_FLAG', 'T')
+      //   // ->select('ACTI_ID')
+      //   ->get()
+      //   ->count();
+
+        $num_sports_in_sr = DB::table('CCSJ_PROD.SR_STUD_TERM_ACT')
+          ->join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUD_TERM_ACT.NAME_ID')
+          // ->join('CCSJ_PROD.CO_ACTIV_CODE', 'CCSJ_PROD.CO_ACTIV_CODE.ACTI_ID', '=', 'CCSJ_PROD.SR_STUD_TERM_ACT.ACTI_ID')
+          ->join('CCSJ_PROD.CO_ACTIV_CODE', function ($join) {
+                $join->on('CCSJ_PROD.SR_STUD_TERM_ACT.ACTI_ID', '=', 'CCSJ_PROD.CO_ACTIV_CODE.ACTI_ID');
+              })
+          ->where('DFLT_ID', $this->DFLT_ID)
+          ->where('TERM_ID', $this->TERM_ID)
+          ->where('ATHLETIC_FLAG', 'T')
+          // ->select('ACTI_ID')
+          ->get()
+          ->count();
+
+        // $num_sports_in_sr = DB::table('CCSJ_PROD.SR_STUD_TERM_ACT')->get();
+        // dd($num_sports_in_sr);
+
+        // return 5;
+        return $num_sports_in_sr;
+  }
+
+
+  public function getIsSrAthleteAttribute()
+  {
+
+      if ($this->num_ccsj_sports > 0)
+      {
+        $result = "TRUE";
+      }
+      else
+      {
+        $result = "FALSE";
+      }
+
+      // return "TRUE";
       return $result;
   }
 
@@ -135,7 +190,7 @@ class Student extends Model
   {
     // Example
     // 20182 --> 20191
-  
+
     // parse the term into two part: year_part and term_part
     $year = substr($term, 0, 4);
     $term_frac = substr($term, 4);

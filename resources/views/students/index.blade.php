@@ -33,6 +33,7 @@
       <th>PrgmId1</th>
       <th>MajorCode</th>
       <th>MajorDesc</th>
+      <th>NumCcsjSports</th>
       <th>IsSrAthlete</th>
     </tr>
 
@@ -51,7 +52,8 @@
           <td>{{ $student->PRGM_ID1 }}</td>
           <td>{{ $student->MAMI_ID_MJ1 }}</td>
           <td>{{ $student->DESCR }}</td>
-          <td>AthleteStatus</td>
+          <td>{{ $student->num_ccsj_sports }}</td>
+          <td>{{ $student->is_sr_athlete }}</td>
         </tr>
       @endif
 
