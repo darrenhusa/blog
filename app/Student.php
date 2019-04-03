@@ -15,7 +15,7 @@ class Student extends Model
 
   // public $AorWInTerm = buildAorWInTerm($TERM_ID);
   //
-  protected $appends = ['a_or_w_in_term', 'a_or_w_in_next_fall'];
+  protected $appends = ['a_or_w_in_term', 'next_fall_term', 'a_or_w_in_next_fall'];
   // protected $appends = ['AorWInTerm'];
 
   public function getAorWInTermAttribute()
@@ -54,6 +54,7 @@ class Student extends Model
     // $term = '20182';
     // $term = $this->TERM_ID;
 
+    // $this->buildAorWInTerm($term);
     $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
       ->where('DFLT_ID', $this->DFLT_ID)
       ->where('TERM_ID', $term);
@@ -66,16 +67,27 @@ class Student extends Model
       {
         $result = "FALSE";
       }
-      // dd($this->DFLT_ID);
-      // dd($status);
-      // dd($result);
-
-      // $result = $this->buildAorWInTerm($this->TERM_ID);
-
-      // dd($result);
 
       return $result;
-      // $this->result;
+  }
+
+  public function buildAorWInTerm($term)
+  {
+
+    $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
+      ->where('DFLT_ID', $this->DFLT_ID)
+      ->where('TERM_ID', $term);
+
+      if ($status->count() == 1)
+      {
+        $result = "TRUE";
+      }
+      else
+      {
+        $result = "FALSE";
+      }
+
+      return $result;
   }
 
 
@@ -118,52 +130,33 @@ class Student extends Model
 
   }
 
-  // public function buildAorWInTerm()
-  // {
-  //   $term = '20191';
-  //
-  //   $status = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
-  //     ->where('DFLT_ID', $this->DFLT_ID)
-  //     ->where('TERM_ID', $term);
-  //
-  //     if ($status->count() == 1)
-  //     {
-  //       $result = "TRUE";
-  //     }
-  //     else
-  //     {
-  //       $result = "FALSE";
-  //     }
-  //
-  //     return $result;
-  // }
 
-  // public function buildNextFallTerm($term)
-  // {
-  //   // Example
-  //   // 20182 --> 20191
-  //
-  //   // parse the term into two part: year_part and term_part
-  //   $year = substr($term, 0, 4);
-  //   $term_frac = substr($term, 4);
-  //
-  //   $result = (int)$year + 1;
-  //   // dd($result);
-  //
-  //   $result = (string)$result . '1';
-  //   // dd($result);
-  //
-  //   // $data = [
-  //   //   'year' => $year,
-  //   //   'term_frac' => $term_frac
-  //   // ];
-  //     // dd($this->DFLT_ID);
-  //     // dd($data);
-  //     // dd($result);
-  //
-  //     return $result;
-  //     // $this->result;
-  // }
+  public function buildNextFallTerm($term)
+  {
+    // Example
+    // 20182 --> 20191
+  
+    // parse the term into two part: year_part and term_part
+    $year = substr($term, 0, 4);
+    $term_frac = substr($term, 4);
+
+    $result = (int)$year + 1;
+    // dd($result);
+
+    $result = (string)$result . '1';
+    // dd($result);
+
+    // $data = [
+    //   'year' => $year,
+    //   'term_frac' => $term_frac
+    // ];
+      // dd($this->DFLT_ID);
+      // dd($data);
+      // dd($result);
+
+      return $result;
+      // $this->result;
+  }
 
 
   // public function setAorWInTermAttribute()
@@ -173,11 +166,11 @@ class Student extends Model
   // }
 
 
-  // public function getNextFallTermAttribute()
-  // {
-  //     return $this->buildNextFallTerm($this->TERM_ID);
-  // }
-  //
+  public function getNextFallTermAttribute()
+  {
+      return $this->buildNextFallTerm($this->TERM_ID);
+  }
+
   // public function getAorWInNextFallAttribute()
   // {
   //     return $this->buildAorWInTerm($this->nextFallTerm);

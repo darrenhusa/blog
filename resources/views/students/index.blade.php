@@ -17,30 +17,31 @@
 
 </ul>
 
-<p>There are {{ $total_non_returners }} non-returners.</p>
+<p>The current term is {{ $current_term }}. The next Fall term is computed as {{ $next_fall_term }}.</p>
+<p>There are {{ $total_non_returners }} TRAD non-returners as of {{ $today }}.</p>
 
   <table border="1">
     <tr>
-      <td>Term</td>
+      <!-- <td>Term</td> -->
       <!-- <td>NextFallTerm</td> -->
-      <td>DfltId</td>
-      <td>LastName</td>
-      <td>FirstName</td>
-      <td>Stud Status</td>
-      <td>EntryType</td>
-      <td>CdivId</td>
-      <td>PrgmId1</td>
-      <td>MajorCode</td>
-      <td>MajorDesc</td>
-      <td>AorWInNextFall</td>
+      <th>DfltId</th>
+      <th>LastName</th>
+      <th>FirstName</th>
+      <th>Stud Status</th>
+      <th>EntryType</th>
+      <th>CdivId</th>
+      <th>PrgmId1</th>
+      <th>MajorCode</th>
+      <th>MajorDesc</th>
+      <th>IsSrAthlete</th>
     </tr>
 
     <!--  Want the non-returners!-->
     @foreach ($students as $student)
-      @if ($student->a_or_w_in_next_fall == 'FALSE')
+      <!-- @if ($student->a_or_w_in_next_fall == 'FALSE') -->
         <tr>
-          <td>{{ $student->TERM_ID }}</td>
-          <!-- <td>{{ $student->NextFallTerm }}</td> -->
+          <!-- <td>{{ $student->TERM_ID }}</td> -->
+          <!-- <td>{{ $student->next_fall_term }}</td> -->
           <td>{{ $student->DFLT_ID }}</td>
           <td>{{ $student->LAST_NAME }}</td>
           <td>{{ $student->FIRST_NAME }}</td>
@@ -50,7 +51,7 @@
           <td>{{ $student->PRGM_ID1 }}</td>
           <td>{{ $student->MAMI_ID_MJ1 }}</td>
           <td>{{ $student->DESCR }}</td>
-          <td>{{ $student->a_or_w_in_next_fall }}</td>
+          <td>AthleteStatus</td>
         </tr>
       @endif
 

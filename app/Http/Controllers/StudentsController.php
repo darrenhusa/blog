@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class StudentsController extends Controller
 {
@@ -33,9 +34,17 @@ class StudentsController extends Controller
       // dd($spring_enrolled->ToArray());
 
       // $term = '20182';
+      $non_returners = $spring_enrolled->where('a_or_w_in_next_fall', 'FALSE');
       $total_non_returners = $spring_enrolled->where('a_or_w_in_next_fall', 'FALSE')->count();
       // $total_non_returners = $spring_enrolled->where('AorWInTerm', 'FALSE')->count();
 
+      // $next_fall_term = $spring_enrolled->pluck('next_fall_term')->unique()->toString();
+      $current_term = $spring_enrolled->pluck('TERM_ID')->unique()->first();
+      $next_fall_term = $spring_enrolled->pluck('next_fall_term')->unique()->first();
+      // $next_fall_term = $spring_enrolled->pluck('next_fall_term')->unique()-toArray();
+      // $next_fall_term = $trad_students->value('next_fall_term')->first();
+
+      // dd($next_fall_term);
       // dd($total_non_returners);
 
       // dd($students->toSql());
@@ -45,9 +54,14 @@ class StudentsController extends Controller
       $codes = $spring_enrolled->sortBy('PRGM_ID1')->pluck('PRGM_ID1')->unique();
       // dd($codes);
       // dd($students_sql);
+      $today = Carbon::today()->toDateString();
 
       $data = [
-        'students' => $spring_enrolled,
+        'today' => $today,
+        'students' => $non_returners,
+        // 'students' => $spring_enrolled,
+        'current_term' => $current_term,
+        'next_fall_term' => $next_fall_term,
         'codes' => $codes,
         'total_non_returners' => $total_non_returners
       ];
