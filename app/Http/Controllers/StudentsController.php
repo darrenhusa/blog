@@ -36,7 +36,7 @@ class StudentsController extends Controller
       $total_non_returners = $spring_enrolled->where('a_or_w_in_next_fall', 'FALSE')->count();
       // $total_non_returners = $spring_enrolled->where('AorWInTerm', 'FALSE')->count();
 
-      dd($total_non_returners);
+      // dd($total_non_returners);
 
       // dd($students->toSql());
       // dd($students->paginate(50)->toSql());

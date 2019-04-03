@@ -17,6 +17,8 @@
 
 </ul>
 
+<p>There are {{ $total_non_returners }} non-returners.</p>
+
   <table border="1">
     <tr>
       <td>Term</td>
@@ -30,12 +32,12 @@
       <td>PrgmId1</td>
       <td>MajorCode</td>
       <td>MajorDesc</td>
-      <!-- <td>AorWInNextFall</td> -->
+      <td>AorWInNextFall</td>
     </tr>
 
     <!--  Want the non-returners!-->
     @foreach ($students as $student)
-      <!-- @if ($student->AorWInTerm == 'FALSE') -->
+      @if ($student->a_or_w_in_next_fall == 'FALSE')
         <tr>
           <td>{{ $student->TERM_ID }}</td>
           <!-- <td>{{ $student->NextFallTerm }}</td> -->
@@ -48,7 +50,7 @@
           <td>{{ $student->PRGM_ID1 }}</td>
           <td>{{ $student->MAMI_ID_MJ1 }}</td>
           <td>{{ $student->DESCR }}</td>
-          <!-- <td>{{ $student->AorWInNextFall }}</td> -->
+          <td>{{ $student->a_or_w_in_next_fall }}</td>
         </tr>
       @endif
 
