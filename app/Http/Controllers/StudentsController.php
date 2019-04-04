@@ -136,27 +136,41 @@ class StudentsController extends Controller
   public function get_names()
   {
 
-    $names = DB::table('CCSJ_PROD.CCSJ_CO_V_NAME')
-    // ->where('rownum', '<', 50)
-      // ->where('ROWNUM', '<', 50)
-      ->select('DFLT_ID', 'LAST_NAME', 'FIRST_NAME')
-      ->get();
+    // $names = DB::table('CCSJ_PROD.CCSJ_CO_V_NAME')
+    // // ->where('rownum', '<', 50)
+    //   // ->where('ROWNUM', '<', 50)
+    //   ->select('DFLT_ID', 'LAST_NAME', 'FIRST_NAME')
+    //   ->get();
       // ->paginate(50);
 
-      // raw sql version??
+      // raw sql version - works tested on 4/4/2019!
 
-      $sql = 'SELECT *
-              FROM
-                ( SELECT rownum rnum, a.*
-                    FROM CCSJ_PROD.CCSJ_CO_V_NAME a
-                    ORDER BY LAST_NAME, FIRST_NAME)
-              WHERE rnum BETWEEN 0 AND 50';
+      // $sql = 'SELECT *
+      //         FROM
+      //           ( SELECT rownum rnum, a.*
+      //               FROM CCSJ_PROD.CCSJ_CO_V_NAME a
+      //               ORDER BY LAST_NAME, FIRST_NAME)
+      //         WHERE rnum BETWEEN 0 AND 50';
+      //
+      // $names = DB::select($sql);
+      //
+      // dd($names);
 
-              // 'select * from CCSJ_PROD.CCSJ_CO_V_NAME where ROWNUM <= 50'
-      $names = DB::raw($sql);
-
-      dd($names);
+      // $names = DB::table('CCSJ_PROD.CCSJ_CO_V_NAME AS t')
+      //   ->select(DB::raw('rownum rnum, t.DFLT_ID, t.LAST_NAME, t.FIRST_NAME'))
+      //   ->orderBy(['t.LAST_NAME', 'asc'])
+      //   ->get();
+      //
+      //   dd($names);
       // dd($names->toArray());
+
+      // laravel query builder subquery syntax
+      // $names = DB::table('CCSJ_PROD.CCSJ_CO_V_NAME')
+      //   ->joinSub($latestPosts, 'latest_posts', function ($join) {
+      //       $join->on('users.id', '=', 'latest_posts.user_id');
+      //   })
+      //   ->whereBetween('rnum', '<' 50)
+      //   ->get();
 
   }
 
