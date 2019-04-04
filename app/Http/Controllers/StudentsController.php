@@ -20,6 +20,8 @@ class StudentsController extends Controller
       ->where('TERM_ID', $term)
       ->isAorW()
       ->inCollege('TRAD')
+      // ->where('rownum', '<', 50)
+      // ->where('ROWNUM', '<', 50)
       // ->where('AorWInTerm', 'FALSE')
       ->orderBy('LAST_NAME', 'asc')
       ->orderBy('FIRST_NAME', 'asc')
@@ -27,11 +29,18 @@ class StudentsController extends Controller
       // ->paginate(50);
       // ->get();
 
+      // $trad_students->get()->toSql();
+      // $trad_students->get()->toSql();
+      // dd($trad_students->toSql());
+
       $spring_enrolled = $trad_students->get();
+      // $spring_enrolled = $trad_students->take(50);
       // $spring_enrolled = $trad_students->simplePaginate(50);
 
       // $students->simplePaginate(50);
 
+      // dd($spring_enrolled->get());
+      // dd($spring_enrolled);
       // dd($spring_enrolled->ToArray());
 
       // $term = '20182';
@@ -86,6 +95,7 @@ class StudentsController extends Controller
         ->where('DFLT_ID', $dflt_id)
         ->where('TERM_ID', $term)
         ->where('ATHLETIC_FLAG', 'T')
+        // ->where('rownum', '<', 50)
         // ->select('ACTI_ID')
         ->get()
         ->count();
@@ -121,6 +131,33 @@ class StudentsController extends Controller
 
       return $next_fall;
       // $this->result;
+  }
+
+  public function get_names()
+  {
+
+    $names = DB::table('CCSJ_PROD.CCSJ_CO_V_NAME')
+    // ->where('rownum', '<', 50)
+      // ->where('ROWNUM', '<', 50)
+      ->select('DFLT_ID', 'LAST_NAME', 'FIRST_NAME')
+      ->get();
+      // ->paginate(50);
+
+      // raw sql version??
+
+      $sql = 'SELECT *
+              FROM
+                ( SELECT rownum rnum, a.*
+                    FROM CCSJ_PROD.CCSJ_CO_V_NAME a
+                    ORDER BY LAST_NAME, FIRST_NAME)
+              WHERE rnum BETWEEN 0 AND 50';
+
+              // 'select * from CCSJ_PROD.CCSJ_CO_V_NAME where ROWNUM <= 50'
+      $names = DB::raw($sql);
+
+      dd($names);
+      // dd($names->toArray());
+
   }
 
 }

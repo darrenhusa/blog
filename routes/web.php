@@ -24,3 +24,5 @@ Route::get('/students', 'StudentsController@index');
 Route::resource('customers', 'CustomersController');
 
 Route::get('/get_number_of_ccsj_sports', 'StudentsController@get_number_of_ccsj_sports');
+
+Route::get('/get_names', 'StudentsController@get_names');
