@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Prospect;
 
 class ProspectsController extends Controller
 {
@@ -64,6 +65,28 @@ class ProspectsController extends Controller
         // dd($prospects->count());
 
         return view('prospects.index', $data);
+
+    }
+
+    public function get_last_names()
+    {
+      $term = '20191';
+
+        $last_names = Prospect::inTerm($term)
+          ->isActive()
+          ->isFirstTime()
+          ->isTrad()
+          // ->select("LAST_NAME")
+          // ->get();
+          // ->take(50)
+          ->get();
+
+          dd($last_names);
+        // dd($last_names->toArray());
+
+        return $last_names;
+
+        // return view('prospects.index', $data);
 
     }
 }

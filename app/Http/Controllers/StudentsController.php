@@ -4,10 +4,70 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
 
 class StudentsController extends Controller
 {
+  public function get_students()
+  {
+    $term = '20182';
+    $fields = ['TERM_ID', 'DFLT_ID', 'LAST_NAME', 'FIRST_NAME', 'STUD_STATUS', 'CDIV_ID', 'ETYP_ID', 'PRGM_ID1', 'MAMI_ID_MJ1', 'DESCR'];
+
+    // Join Prospect with CCSJ_PROD.CCSJ_CO_V_NAME on NAME_ID
+    $trad_students = \App\Student::join('CCSJ_PROD.CCSJ_CO_V_NAME', 'CCSJ_PROD.CCSJ_CO_V_NAME.NAME_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.NAME_ID')
+      ->leftJoin('CCSJ_PROD.CO_MAJOR_MINOR', 'CCSJ_PROD.CO_MAJOR_MINOR.MAMI_ID', '=', 'CCSJ_PROD.SR_STUDENT_TERM.MAMI_ID_MJ1')
+      ->where('TERM_ID', $term)
+      ->isAorW()
+      ->inCollege('TRAD')
+      // ->where('rownum', '<', 50)
+      // ->where('ROWNUM', '<', 50)
+      // ->where('AorWInTerm', 'FALSE')
+      ->orderBy('LAST_NAME', 'asc')
+      ->orderBy('FIRST_NAME', 'asc')
+      ->select($fields);
+      // ->paginate(50);
+      // ->get();
+
+      // $trad_students->get()->toSql();
+      // $trad_students->get()->toSql();
+      // dd($trad_students->toSql());
+
+      $spring_enrolled = $trad_students->get();
+
+      // $spring_enrolled_temp = $trad_students->get()->toArray();
+
+      // try to code a manual paginator!
+      $perPage = 25;
+      $offsetPages = 0;
+
+      $spring_enrolled = array_slice(
+        $spring_enrolled->toArray(),
+        $offsetPages * $perPage,
+        $perPage
+      );
+
+      $students_paged = new Paginator(
+        $spring_enrolled,
+        $perPage
+      );
+
+      $data = [
+        // 'today' => '',
+        // 'students' => $non_returners,
+        'students' => $students_paged,
+        // 'students' => $spring_enrolled,
+        // 'current_term' => '20182',
+        // 'next_fall_term' => '20191',
+        // 'codes' => [],
+        // 'total_non_returners' => 0
+      ];
+
+      return view('students.get_students', $data);
+
+  }
+
+
   public function index()
   {
     // $term = '20191';
@@ -34,6 +94,25 @@ class StudentsController extends Controller
       // dd($trad_students->toSql());
 
       $spring_enrolled = $trad_students->get();
+
+      // $spring_enrolled_temp = $trad_students->get()->toArray();
+
+      // try to code a manual paginator!
+      // $perPage = 25;
+      // $offsetPages = 0;
+
+      // $spring_enrolled_temp = array_slice(
+      //   $spring_enrolled_temp,
+      //   $offsetPages * $perPage,
+      //   $perPage
+      // );
+
+      // $students_paged = new Paginator(
+      //   $spring_enrolled_temp,
+      //   $perPage
+      // );
+
+      // $spring_enrolled = $trad_students->paginate(25);
       // $spring_enrolled = $trad_students->take(50);
       // $spring_enrolled = $trad_students->simplePaginate(50);
 
@@ -69,6 +148,7 @@ class StudentsController extends Controller
       $data = [
         'today' => $today,
         'students' => $non_returners,
+        // 'students' => $students_paged,
         // 'students' => $spring_enrolled,
         'current_term' => $current_term,
         'next_fall_term' => $next_fall_term,
