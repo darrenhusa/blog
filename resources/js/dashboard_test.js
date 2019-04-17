@@ -7,6 +7,7 @@ new Vue({
     loadData: function () {
       $.get('/get_last_names', function (response) {
         this.items = response.items;
+        console.log(response.items);
       }.bind(this));
     }
   },

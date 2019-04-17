@@ -79,9 +79,10 @@ class ProspectsController extends Controller
           // ->select("LAST_NAME")
           // ->get();
           // ->take(50)
-          ->get();
+          ->pluck('NAME_ID');
+          // ->get();
 
-          dd($last_names);
+          // dd($last_names);
         // dd($last_names->toArray());
 
         return $last_names;

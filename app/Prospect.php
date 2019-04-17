@@ -41,4 +41,11 @@ class Prospect extends Model
 
         return $query->where('PRGM_ID1', 'TRAD');
      }
+
+   //   protected static function boot()
+   // {
+   //     parent::boot();
+   //
+   //     static::addGlobalScope(new );
+   // }
 }
